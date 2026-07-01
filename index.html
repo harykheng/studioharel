@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+<script>document.documentElement.classList.add('js');</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Studio Harel — Website Toko untuk UMKM, Siap dalam 3 Hari</title>
@@ -17,6 +18,8 @@
     --white: #FFFFFF;
     --radius: 16px;
     --shadow: 0 8px 24px rgba(61, 43, 31, 0.10);
+    --shadow-lg: 0 20px 40px rgba(61, 43, 31, 0.16);
+    --ease: cubic-bezier(.16, 1, .3, 1);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -25,10 +28,22 @@
 
   body {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    background: var(--krem);
+    background-color: var(--krem);
+    background-image: radial-gradient(rgba(61, 43, 31, 0.055) 1px, transparent 1px);
+    background-size: 22px 22px;
     color: var(--coklat);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 
   img, svg { display: block; max-width: 100%; }
@@ -71,6 +86,7 @@
   }
 
   .btn {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -81,8 +97,22 @@
     font-size: 15px;
     border: none;
     cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    overflow: hidden;
+    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.2s ease;
   }
+  .btn::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.6s ease;
+  }
+  .btn:hover::after { left: 130%; }
+  .btn:hover { transform: translateY(-2px); }
   .btn:active { transform: scale(0.97); }
 
   .btn-primary {
@@ -90,7 +120,7 @@
     color: var(--white);
     box-shadow: 0 6px 16px rgba(125, 155, 118, 0.35);
   }
-  .btn-primary:hover { background: var(--sage-dark); }
+  .btn-primary:hover { background: var(--sage-dark); box-shadow: 0 10px 24px rgba(125, 155, 118, 0.45); }
 
   .btn-outline {
     background: transparent;
@@ -115,6 +145,10 @@
     background: rgba(245, 239, 230, 0.92);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid rgba(61, 43, 31, 0.08);
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  header.scrolled {
+    box-shadow: 0 4px 20px rgba(61, 43, 31, 0.08);
   }
   .navbar {
     display: flex;
@@ -123,7 +157,9 @@
     padding: 16px 20px;
     max-width: 1100px;
     margin: 0 auto;
+    transition: padding 0.3s ease;
   }
+  header.scrolled .navbar { padding: 11px 20px; }
   .logo {
     font-size: 19px;
     font-weight: 800;
@@ -135,8 +171,36 @@
   /* HERO */
   .hero {
     padding: 56px 0 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.35;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .blob-1 {
+    width: 260px; height: 260px;
+    background: var(--sage);
+    top: -70px; right: -60px;
+    animation: float-blob 11s ease-in-out infinite;
+  }
+  .blob-2 {
+    width: 200px; height: 200px;
+    background: #C97B63;
+    bottom: -30px; left: -50px;
+    animation: float-blob 13s ease-in-out infinite reverse;
+  }
+  @keyframes float-blob {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(24px, -20px) scale(1.08); }
   }
   .hero-grid {
+    position: relative;
+    z-index: 1;
     display: grid;
     grid-template-columns: 1fr;
     gap: 40px;
@@ -147,12 +211,43 @@
     margin-bottom: 18px;
     letter-spacing: -0.01em;
   }
-  .hero-text .highlight { color: var(--sage-dark); }
+  .hero-text .highlight {
+    background: linear-gradient(90deg, var(--sage-dark), var(--sage));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
   .hero-text p {
     font-size: 17px;
     color: #5c4d41;
     max-width: 480px;
     margin-bottom: 28px;
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(22px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-anim {
+    opacity: 0;
+    animation: fade-up 0.8s var(--ease) forwards;
+  }
+  .hero-anim.d1 { animation-delay: 0.05s; }
+  .hero-anim.d2 { animation-delay: 0.2s; }
+  .hero-anim.d3 { animation-delay: 0.35s; }
+  .hero-anim.d4 { animation-delay: 0.5s; }
+
+  /* SCROLL CUE */
+  .scroll-cue {
+    display: none;
+    justify-content: center;
+    margin-top: 44px;
+    opacity: 0.55;
+    animation: bounce 2.2s ease-in-out infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
   }
 
   /* PHONE MOCKUP */
@@ -166,8 +261,13 @@
     background: var(--coklat);
     border-radius: 36px;
     padding: 12px;
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-lg);
     position: relative;
+    animation: float-phone 6s ease-in-out infinite;
+  }
+  @keyframes float-phone {
+    0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+    50% { transform: translateY(-14px) rotate(1deg); }
   }
   .phone::before {
     content: "";
@@ -253,6 +353,22 @@
     border-radius: 10px;
   }
 
+  /* MARKER ACCENT */
+  .marker {
+    position: relative;
+    z-index: 1;
+    white-space: nowrap;
+  }
+  .marker::after {
+    content: "";
+    position: absolute;
+    left: -4px; right: -4px; bottom: 4px;
+    height: 10px;
+    background: rgba(125, 155, 118, 0.3);
+    z-index: -1;
+    border-radius: 6px;
+  }
+
   /* PAIN POINTS */
   .pain-grid {
     display: grid;
@@ -265,6 +381,11 @@
     padding: 24px;
     box-shadow: var(--shadow);
     border-left: 4px solid #C97B63;
+    transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  }
+  .pain-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
   }
   .pain-card .icon {
     width: 40px;
@@ -293,6 +414,11 @@
     border-radius: var(--radius);
     padding: 24px;
     box-shadow: var(--shadow);
+    transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  }
+  .feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
   }
   .feature-card .icon {
     width: 44px;
@@ -303,7 +429,9 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 16px;
+    transition: transform 0.35s var(--ease);
   }
+  .feature-card:hover .icon { transform: scale(1.1) rotate(-4deg); }
   .feature-card .icon svg { stroke: var(--white); }
   .feature-card p.title {
     font-weight: 700;
@@ -320,6 +448,11 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
+    transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  }
+  .portfolio-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
   }
   .portfolio-badge {
     display: inline-flex;
@@ -358,6 +491,11 @@
     display: flex;
     flex-direction: column;
     border: 2px solid transparent;
+    transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  }
+  .price-card:not(.featured):hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
   }
   .price-card.featured {
     background: var(--coklat);
@@ -365,6 +503,14 @@
     border-color: var(--sage);
     position: relative;
     transform: scale(1.02);
+    animation: glow-pulse 3s ease-in-out infinite;
+  }
+  .price-card.featured:hover {
+    transform: scale(1.03) translateY(-6px);
+  }
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: var(--shadow), 0 0 0 0 rgba(125, 155, 118, 0.35); }
+    50% { box-shadow: var(--shadow), 0 0 0 10px rgba(125, 155, 118, 0); }
   }
   .price-card .badge {
     position: absolute;
@@ -414,7 +560,9 @@
     box-shadow: var(--shadow);
     margin-bottom: 12px;
     overflow: hidden;
+    transition: box-shadow 0.3s ease;
   }
+  .faq-item:hover { box-shadow: var(--shadow-lg); }
   .faq-question {
     width: 100%;
     background: none;
@@ -490,15 +638,43 @@
   }
   footer .tagline { margin-top: 4px; font-weight: 600; color: var(--coklat); }
 
-  /* FADE IN */
-  .fade-in {
+  /* FADE IN (progressive enhancement: only hides content once JS confirms it can reveal it again) */
+  .js .fade-in {
     opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
+    transform: translateY(24px) scale(0.98);
+    transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
   }
   .fade-in.visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+  }
+  .fade-in.d1 { transition-delay: 0s; }
+  .fade-in.d2 { transition-delay: 0.1s; }
+  .fade-in.d3 { transition-delay: 0.2s; }
+  .fade-in.d4 { transition-delay: 0.3s; }
+
+  /* WHATSAPP FLOAT BUTTON */
+  .wa-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--sage);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    box-shadow: 0 8px 20px rgba(125, 155, 118, 0.4);
+    animation: pulse-ring 2.5s ease-in-out infinite;
+    transition: transform 0.25s var(--ease), background 0.2s ease;
+  }
+  .wa-float:hover { transform: scale(1.08); background: var(--sage-dark); }
+  .wa-float svg { width: 26px; height: 26px; fill: #fff; }
+  @keyframes pulse-ring {
+    0%, 100% { box-shadow: 0 8px 20px rgba(125, 155, 118, 0.4), 0 0 0 0 rgba(125, 155, 118, 0.3); }
+    50% { box-shadow: 0 8px 20px rgba(125, 155, 118, 0.4), 0 0 0 10px rgba(125, 155, 118, 0); }
   }
 
   /* DESKTOP */
@@ -514,6 +690,7 @@
     .feature-grid { grid-template-columns: repeat(2, 1fr); }
     .price-grid { grid-template-columns: repeat(2, 1fr); max-width: 720px; margin: 0 auto; }
     .section-sub { font-size: 17px; }
+    .scroll-cue { display: flex; }
   }
 
   @media (min-width: 1024px) {
@@ -533,14 +710,19 @@
 <main>
   <!-- HERO -->
   <section class="hero">
+    <div class="blob blob-1" aria-hidden="true"></div>
+    <div class="blob blob-2" aria-hidden="true"></div>
     <div class="container">
       <div class="hero-grid">
-        <div class="hero-text fade-in">
-          <h1>Website Toko Kamu, <span class="highlight">Siap dalam 3 Hari</span></h1>
-          <p>Pelanggan pilih produk, isi data, langsung order via WhatsApp — tanpa ribet, tanpa aplikasi tambahan.</p>
-          <a href="https://brevacafe.vercel.app" target="_blank" rel="noopener" class="btn btn-primary">Lihat Contoh Website →</a>
+        <div class="hero-text">
+          <h1 class="hero-anim d1">Website Toko Kamu, <span class="highlight">Siap dalam 3 Hari</span></h1>
+          <p class="hero-anim d2">Pelanggan pilih produk, isi data, langsung order via WhatsApp — tanpa ribet, tanpa aplikasi tambahan.</p>
+          <a href="https://brevacafe.vercel.app" target="_blank" rel="noopener" class="btn btn-primary hero-anim d3">Lihat Contoh Website →</a>
+          <a href="#masalah" class="scroll-cue" aria-label="Scroll ke bawah">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+          </a>
         </div>
-        <div class="phone-wrap fade-in">
+        <div class="phone-wrap hero-anim d4">
           <div class="phone">
             <div class="phone-screen">
               <div class="phone-topbar">
@@ -587,19 +769,19 @@
         <p class="section-sub">Chat WhatsApp yang menumpuk bikin order gampang salah dan calon pembeli kabur duluan.</p>
       </div>
       <div class="pain-grid">
-        <div class="pain-card fade-in">
+        <div class="pain-card fade-in d1">
           <div class="icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C97B63" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           </div>
           <p class="title">Chat WA panjang hanya untuk tahu harga</p>
         </div>
-        <div class="pain-card fade-in">
+        <div class="pain-card fade-in d2">
           <div class="icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C97B63" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
           </div>
           <p class="title">Order masuk tapi sering salah atau tidak lengkap</p>
         </div>
-        <div class="pain-card fade-in">
+        <div class="pain-card fade-in d3">
           <div class="icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C97B63" stroke-width="2" stroke-linecap="round"><path d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
           </div>
@@ -614,23 +796,23 @@
     <div class="container">
       <div class="fade-in">
         <span class="eyebrow">Solusi</span>
-        <h2>Satu website, semua beres</h2>
+        <h2>Satu website, <span class="marker">semua beres</span></h2>
         <p class="section-sub">Semua yang dibutuhkan toko kamu untuk terima order tanpa ribet, dalam satu halaman.</p>
       </div>
       <div class="feature-grid">
-        <div class="feature-card fade-in">
+        <div class="feature-card fade-in d1">
           <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
           <p class="title">Catalog produk dengan foto &amp; harga</p>
         </div>
-        <div class="feature-card fade-in">
+        <div class="feature-card fade-in d2">
           <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
           <p class="title">Form order otomatis → langsung ke WA kamu</p>
         </div>
-        <div class="feature-card fade-in">
+        <div class="feature-card fade-in d3">
           <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v13H3z"/><path d="M8 21h8M12 16v5"/></svg></div>
           <p class="title">Bisa pickup atau delivery</p>
         </div>
-        <div class="feature-card fade-in">
+        <div class="feature-card fade-in d4">
           <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></div>
           <p class="title">Tampil profesional di HP pelanggan</p>
         </div>
@@ -660,11 +842,11 @@
     <div class="container">
       <div class="fade-in">
         <span class="eyebrow">Harga</span>
-        <h2>Harga jelas, tanpa biaya tersembunyi</h2>
+        <h2>Harga jelas, <span class="marker">tanpa biaya tersembunyi</span></h2>
         <p class="section-sub">Pilih paket sesuai kebutuhan toko kamu. Bisa upgrade kapan saja.</p>
       </div>
       <div class="price-grid">
-        <div class="price-card fade-in">
+        <div class="price-card fade-in d1">
           <span class="paket-name">Paket Starter</span>
           <div class="price">Rp 350.000</div>
           <ul>
@@ -676,7 +858,7 @@
           </ul>
           <a href="https://wa.me/6281292567788?text=Halo%20Studio%20Harel%2C%20saya%20mau%20pesan%20Paket%20Starter%20(Rp%20350.000)" target="_blank" rel="noopener" class="btn btn-outline btn-block">Pesan Paket Ini</a>
         </div>
-        <div class="price-card featured fade-in">
+        <div class="price-card featured fade-in d2">
           <span class="badge">Rekomendasi</span>
           <span class="paket-name">Paket Lengkap</span>
           <div class="price">Rp 650.000</div>
@@ -703,8 +885,8 @@
         <span class="eyebrow">FAQ</span>
         <h2>Pertanyaan yang sering ditanyakan</h2>
       </div>
-      <div class="faq-list fade-in" style="max-width:680px;">
-        <div class="faq-item">
+      <div class="faq-list" style="max-width:680px;">
+        <div class="faq-item fade-in d1">
           <button class="faq-question">
             Apakah saya perlu paham teknologi?
             <span class="plus"></span>
@@ -713,7 +895,7 @@
             <p>Tidak perlu. Kamu cukup kirim foto produk, nama, dan harga — sisanya kami yang urus.</p>
           </div>
         </div>
-        <div class="faq-item">
+        <div class="faq-item fade-in d2">
           <button class="faq-question">
             Setelah website jadi, siapa yang kelola?
             <span class="plus"></span>
@@ -722,7 +904,7 @@
             <p>Website bisa kamu pakai langsung. Kalau perlu update produk, bisa hubungi kami dengan biaya revisi Rp 50.000/sesi.</p>
           </div>
         </div>
-        <div class="faq-item">
+        <div class="faq-item fade-in d3">
           <button class="faq-question">
             Apakah ada biaya bulanan?
             <span class="plus"></span>
@@ -739,7 +921,7 @@
   <section id="kontak">
     <div class="container">
       <div class="cta-final fade-in">
-        <h2>Siap punya website toko sendiri?</h2>
+        <h2>Siap punya <span class="marker">website toko sendiri</span>?</h2>
         <p>Konsultasi gratis, tanpa komitmen</p>
         <a href="https://wa.me/6281292567788?text=Halo%20Studio%20Harel%2C%20saya%20mau%20konsultasi%20tentang%20pembuatan%20website%20toko" target="_blank" rel="noopener" class="btn btn-primary">Chat WhatsApp Sekarang</a>
       </div>
@@ -752,7 +934,17 @@
   <p class="tagline">Website untuk UMKM Indonesia</p>
 </footer>
 
+<a href="https://wa.me/6281292567788?text=Halo%20Studio%20Harel%2C%20saya%20mau%20tanya%20soal%20pembuatan%20website%20toko" target="_blank" rel="noopener" class="wa-float" aria-label="Chat WhatsApp Studio Harel">
+  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.82.48 3.53 1.32 5.01L2 22l5.12-1.3A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.6 0-3.1-.43-4.4-1.19l-.32-.19-3.02.77.8-2.94-.21-.31A7.94 7.94 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8zm4.4-5.9c-.24-.12-1.43-.7-1.65-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06-.24-.12-1.01-.37-1.92-1.18-.71-.63-1.19-1.42-1.33-1.66-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.19-.46-.39-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.43-.58 1.63-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28z"/></svg>
+</a>
+
 <script>
+  // Navbar shrink on scroll
+  const header = document.querySelector('header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
+
   // Fade-in on scroll
   const faders = document.querySelectorAll('.fade-in');
   const observer = new IntersectionObserver((entries) => {
