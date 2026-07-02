@@ -46,6 +46,22 @@
     }
   }
 
+  /* FADE IN (progressive enhancement: only hides content once JS confirms it can reveal it again) */
+  /* Placed early so later, more specific :hover/:active card rules win the cascade over .fade-in.visible's transform. */
+  .js .fade-in {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+    transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  .fade-in.d1 { transition-delay: 0s; }
+  .fade-in.d2 { transition-delay: 0.1s; }
+  .fade-in.d3 { transition-delay: 0.2s; }
+  .fade-in.d4 { transition-delay: 0.3s; }
+
   img, svg { display: block; max-width: 100%; }
 
   a { text-decoration: none; color: inherit; }
@@ -111,7 +127,7 @@
     transform: skewX(-20deg);
     transition: left 0.6s ease;
   }
-  .btn:hover::after { left: 130%; }
+  .btn:hover::after, .btn:active::after { left: 130%; }
   .btn:hover { transform: translateY(-2px); }
   .btn:active { transform: scale(0.97); }
 
@@ -120,20 +136,20 @@
     color: var(--white);
     box-shadow: 0 6px 16px rgba(125, 155, 118, 0.35);
   }
-  .btn-primary:hover { background: var(--sage-dark); box-shadow: 0 10px 24px rgba(125, 155, 118, 0.45); }
+  .btn-primary:hover, .btn-primary:active { background: var(--sage-dark); box-shadow: 0 10px 24px rgba(125, 155, 118, 0.45); }
 
   .btn-outline {
     background: transparent;
     color: var(--coklat);
     border: 2px solid var(--coklat);
   }
-  .btn-outline:hover { background: var(--coklat); color: var(--white); }
+  .btn-outline:hover, .btn-outline:active { background: var(--coklat); color: var(--white); }
 
   .btn-dark {
     background: var(--coklat);
     color: var(--krem);
   }
-  .btn-dark:hover { background: #2a1d15; }
+  .btn-dark:hover, .btn-dark:active { background: #2a1d15; }
 
   .btn-block { width: 100%; }
 
@@ -383,7 +399,7 @@
     border-left: 4px solid #C97B63;
     transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
   }
-  .pain-card:hover {
+  .pain-card:hover, .pain-card:active {
     transform: translateY(-6px);
     box-shadow: var(--shadow-lg);
   }
@@ -416,7 +432,7 @@
     box-shadow: var(--shadow);
     transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
   }
-  .feature-card:hover {
+  .feature-card:hover, .feature-card:active {
     transform: translateY(-6px);
     box-shadow: var(--shadow-lg);
   }
@@ -431,7 +447,7 @@
     margin-bottom: 16px;
     transition: transform 0.35s var(--ease);
   }
-  .feature-card:hover .icon { transform: scale(1.1) rotate(-4deg); }
+  .feature-card:hover .icon, .feature-card:active .icon { transform: scale(1.1) rotate(-4deg); }
   .feature-card .icon svg { stroke: var(--white); }
   .feature-card p.title {
     font-weight: 700;
@@ -450,7 +466,7 @@
     gap: 14px;
     transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
   }
-  .portfolio-card:hover {
+  .portfolio-card:hover, .portfolio-card:active {
     transform: translateY(-6px);
     box-shadow: var(--shadow-lg);
   }
@@ -493,7 +509,7 @@
     border: 2px solid transparent;
     transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
   }
-  .price-card:not(.featured):hover {
+  .price-card:not(.featured):hover, .price-card:not(.featured):active {
     transform: translateY(-6px);
     box-shadow: var(--shadow-lg);
   }
@@ -505,7 +521,7 @@
     transform: scale(1.02);
     animation: glow-pulse 3s ease-in-out infinite;
   }
-  .price-card.featured:hover {
+  .price-card.featured:hover, .price-card.featured:active {
     transform: scale(1.03) translateY(-6px);
   }
   @keyframes glow-pulse {
@@ -562,7 +578,7 @@
     overflow: hidden;
     transition: box-shadow 0.3s ease;
   }
-  .faq-item:hover { box-shadow: var(--shadow-lg); }
+  .faq-item:hover, .faq-item:active { box-shadow: var(--shadow-lg); }
   .faq-question {
     width: 100%;
     background: none;
@@ -638,21 +654,6 @@
   }
   footer .tagline { margin-top: 4px; font-weight: 600; color: var(--coklat); }
 
-  /* FADE IN (progressive enhancement: only hides content once JS confirms it can reveal it again) */
-  .js .fade-in {
-    opacity: 0;
-    transform: translateY(24px) scale(0.98);
-    transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
-  }
-  .fade-in.visible {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  .fade-in.d1 { transition-delay: 0s; }
-  .fade-in.d2 { transition-delay: 0.1s; }
-  .fade-in.d3 { transition-delay: 0.2s; }
-  .fade-in.d4 { transition-delay: 0.3s; }
-
   /* WHATSAPP FLOAT BUTTON */
   .wa-float {
     position: fixed;
@@ -670,7 +671,7 @@
     animation: pulse-ring 2.5s ease-in-out infinite;
     transition: transform 0.25s var(--ease), background 0.2s ease;
   }
-  .wa-float:hover { transform: scale(1.08); background: var(--sage-dark); }
+  .wa-float:hover, .wa-float:active { transform: scale(1.08); background: var(--sage-dark); }
   .wa-float svg { width: 26px; height: 26px; fill: #fff; }
   @keyframes pulse-ring {
     0%, 100% { box-shadow: 0 8px 20px rgba(125, 155, 118, 0.4), 0 0 0 0 rgba(125, 155, 118, 0.3); }
