@@ -12,9 +12,12 @@
 <style>
   :root {
     --coklat: #3D2B1F;
+    --coklat-soft: #55402f;
     --krem: #F5EFE6;
+    --sage-tint: #EDF1E8;
     --sage: #7D9B76;
     --sage-dark: #64805e;
+    --coral: #C97B63;
     --white: #FFFFFF;
     --radius: 16px;
     --shadow: 0 8px 24px rgba(61, 43, 31, 0.10);
@@ -70,12 +73,20 @@
 
   .container {
     width: 100%;
-    max-width: 1100px;
+    max-width: 1120px;
     margin: 0 auto;
     padding: 0 20px;
   }
 
   section { padding: 64px 0; }
+
+  .panel { position: relative; }
+  .panel-dark {
+    background: var(--coklat);
+    color: var(--krem);
+    overflow: hidden;
+  }
+  .panel-sage { background: var(--sage-tint); }
 
   .eyebrow {
     display: inline-block;
@@ -86,13 +97,15 @@
     color: var(--sage-dark);
     margin-bottom: 12px;
   }
+  .eyebrow--light { color: var(--sage); }
 
-  h1, h2, h3 { font-weight: 800; line-height: 1.2; }
+  h1, h2, h3 { font-weight: 800; line-height: 1.15; letter-spacing: -0.01em; }
 
   h2 {
-    font-size: clamp(26px, 5vw, 38px);
+    font-size: clamp(28px, 5.5vw, 42px);
     margin-bottom: 12px;
   }
+  h2.text-light { color: var(--krem); }
 
   .section-sub {
     color: #6b5c4f;
@@ -100,6 +113,7 @@
     max-width: 520px;
     margin-bottom: 40px;
   }
+  .section-sub--light { color: rgba(245, 239, 230, 0.72); }
 
   .btn {
     position: relative;
@@ -107,7 +121,7 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 14px 26px;
+    padding: 15px 28px;
     border-radius: 100px;
     font-weight: 700;
     font-size: 15px;
@@ -151,6 +165,12 @@
   }
   .btn-dark:hover, .btn-dark:active { background: #2a1d15; }
 
+  .btn-cream {
+    background: var(--krem);
+    color: var(--coklat);
+  }
+  .btn-cream:hover, .btn-cream:active { background: var(--white); }
+
   .btn-block { width: 100%; }
 
   /* NAVBAR */
@@ -171,7 +191,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 16px 20px;
-    max-width: 1100px;
+    max-width: 1120px;
     margin: 0 auto;
     transition: padding 0.3s ease;
   }
@@ -206,7 +226,7 @@
   }
   .blob-2 {
     width: 200px; height: 200px;
-    background: #C97B63;
+    background: var(--coral);
     bottom: -30px; left: -50px;
     animation: float-blob 13s ease-in-out infinite reverse;
   }
@@ -222,10 +242,23 @@
     gap: 40px;
     align-items: center;
   }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(125, 155, 118, 0.14);
+    border: 1px solid rgba(125, 155, 118, 0.32);
+    color: var(--sage-dark);
+    padding: 7px 16px;
+    border-radius: 100px;
+    font-size: 12.5px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
   .hero-text h1 {
-    font-size: clamp(30px, 7vw, 48px);
+    font-size: clamp(32px, 8vw, 56px);
     margin-bottom: 18px;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
   }
   .hero-text .highlight {
     background: linear-gradient(90deg, var(--sage-dark), var(--sage));
@@ -248,10 +281,11 @@
     opacity: 0;
     animation: fade-up 0.8s var(--ease) forwards;
   }
-  .hero-anim.d1 { animation-delay: 0.05s; }
-  .hero-anim.d2 { animation-delay: 0.2s; }
-  .hero-anim.d3 { animation-delay: 0.35s; }
-  .hero-anim.d4 { animation-delay: 0.5s; }
+  .hero-anim.d0 { animation-delay: 0s; }
+  .hero-anim.d1 { animation-delay: 0.15s; }
+  .hero-anim.d2 { animation-delay: 0.3s; }
+  .hero-anim.d3 { animation-delay: 0.45s; }
+  .hero-anim.d4 { animation-delay: 0.6s; }
 
   /* SCROLL CUE */
   .scroll-cue {
@@ -384,39 +418,72 @@
     z-index: -1;
     border-radius: 6px;
   }
+  .marker--light::after { background: rgba(125, 155, 118, 0.4); }
 
-  /* PAIN POINTS */
+  /* GHOST NUMBER */
+  .ghost-num {
+    position: absolute;
+    top: 6px;
+    right: 18px;
+    font-size: 60px;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--coklat);
+    opacity: 0.06;
+    pointer-events: none;
+  }
+  .ghost-num--light { color: var(--krem); opacity: 0.1; }
+
+  /* PAIN POINTS (dark panel) */
+  .pain-blob {
+    position: absolute;
+    width: 320px; height: 320px;
+    background: var(--sage);
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.18;
+    top: -100px; right: -80px;
+    pointer-events: none;
+  }
   .pain-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 16px;
+    position: relative;
+    z-index: 1;
   }
   .pain-card {
-    background: var(--white);
+    position: relative;
+    overflow: hidden;
+    background: rgba(245, 239, 230, 0.06);
+    border: 1px solid rgba(245, 239, 230, 0.14);
     border-radius: var(--radius);
-    padding: 24px;
-    box-shadow: var(--shadow);
-    border-left: 4px solid #C97B63;
-    transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+    padding: 28px 24px;
+    transition: transform 0.35s var(--ease), background 0.35s ease, border-color 0.35s ease;
   }
   .pain-card:hover, .pain-card:active {
     transform: translateY(-6px);
-    box-shadow: var(--shadow-lg);
+    background: rgba(245, 239, 230, 0.1);
+    border-color: rgba(125, 155, 118, 0.5);
   }
   .pain-card .icon {
     width: 40px;
     height: 40px;
     border-radius: 10px;
-    background: #FBE9E4;
+    background: rgba(245, 239, 230, 0.12);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
   }
   .pain-card p.title {
     font-weight: 700;
-    font-size: 16px;
-    color: var(--coklat);
+    font-size: 16.5px;
+    color: var(--krem);
+    position: relative;
+    z-index: 1;
   }
 
   /* FEATURES */
@@ -426,9 +493,11 @@
     gap: 16px;
   }
   .feature-card {
+    position: relative;
+    overflow: hidden;
     background: var(--white);
     border-radius: var(--radius);
-    padding: 24px;
+    padding: 28px 24px;
     box-shadow: var(--shadow);
     transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
   }
@@ -445,53 +514,125 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
     transition: transform 0.35s var(--ease);
   }
   .feature-card:hover .icon, .feature-card:active .icon { transform: scale(1.1) rotate(-4deg); }
   .feature-card .icon svg { stroke: var(--white); }
   .feature-card p.title {
     font-weight: 700;
-    font-size: 16px;
+    font-size: 16.5px;
+    position: relative;
+    z-index: 1;
   }
 
   /* PORTFOLIO */
-  .portfolio-card {
-    background: var(--coklat);
-    color: var(--krem);
-    border-radius: 20px;
-    padding: 32px 28px;
-    box-shadow: var(--shadow);
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    align-items: center;
   }
-  .portfolio-card:hover, .portfolio-card:active {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-lg);
-  }
+  .portfolio-info { position: relative; z-index: 1; }
   .portfolio-badge {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: rgba(125,155,118,0.25);
-    color: var(--sage);
+    background: rgba(125,155,118,0.16);
+    color: var(--sage-dark);
     font-size: 12px;
     font-weight: 700;
     padding: 6px 12px;
     border-radius: 100px;
     width: fit-content;
+    margin-bottom: 14px;
   }
   .portfolio-badge .dot {
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: var(--sage);
+    background: var(--sage-dark);
   }
-  .portfolio-card h3 { font-size: 24px; margin-bottom: 4px; }
-  .portfolio-card .url { color: #C9B7A6; font-size: 14px; }
-  .portfolio-card .desc { font-size: 14px; color: #D8CDBF; max-width: 420px; }
-  .portfolio-card .btn-primary { align-self: flex-start; margin-top: 6px; }
+  .portfolio-info h3 { font-size: clamp(24px, 4vw, 30px); margin-bottom: 6px; }
+  .portfolio-info .url { color: var(--sage-dark); font-size: 14px; font-weight: 600; }
+  .portfolio-info .desc { color: #6b5c4f; max-width: 420px; margin: 14px 0 24px; }
+
+  /* BROWSER MOCKUP */
+  .browser-mockup {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(61, 43, 31, 0.08);
+    transition: transform 0.4s var(--ease);
+  }
+  .browser-mockup:hover, .browser-mockup:active { transform: translateY(-6px); }
+  .browser-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 12px;
+    background: #EDE6D8;
+    border-bottom: 1px solid rgba(61, 43, 31, 0.08);
+  }
+  .browser-bar .dot { width: 9px; height: 9px; border-radius: 50%; }
+  .browser-bar .dot.red { background: #E67C73; }
+  .browser-bar .dot.yellow { background: #F2B84B; }
+  .browser-bar .dot.green { background: #7FBF7F; }
+  .browser-url {
+    margin-left: 8px;
+    background: var(--white);
+    border-radius: 100px;
+    padding: 5px 14px;
+    font-size: 11px;
+    color: #8a7a6b;
+    flex: 1;
+    max-width: 220px;
+  }
+  .browser-body { padding: 16px; background: var(--krem); }
+  .menu-hero {
+    height: 60px;
+    border-radius: 10px;
+    background: linear-gradient(120deg, var(--coklat), var(--coklat-soft));
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    color: var(--krem);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .menu-item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background: var(--white);
+    border-radius: 10px;
+    padding: 9px;
+    margin-bottom: 8px;
+  }
+  .menu-item .thumb {
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+  .menu-item .thumb.m1 { background: #D9C0A0; }
+  .menu-item .thumb.m2 { background: #B98D6F; }
+  .menu-item .thumb.m3 { background: #8C6A4E; }
+  .menu-item .lines { flex: 1; }
+  .menu-item .l1 { width: 65%; height: 8px; border-radius: 4px; background: #d8cfc2; margin-bottom: 6px; }
+  .menu-item .l2 { width: 40%; height: 7px; border-radius: 4px; background: #e5ded1; }
+  .menu-item .price { font-size: 11px; font-weight: 700; color: var(--sage-dark); flex-shrink: 0; }
+  .menu-chips { display: flex; gap: 8px; margin-top: 4px; }
+  .menu-chips .chip {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--sage-dark);
+    background: rgba(125, 155, 118, 0.14);
+    padding: 5px 10px;
+    border-radius: 100px;
+  }
 
   /* PRICING */
   .price-grid {
@@ -502,7 +643,7 @@
   .price-card {
     background: var(--white);
     border-radius: 20px;
-    padding: 28px 24px;
+    padding: 30px 26px;
     box-shadow: var(--shadow);
     display: flex;
     flex-direction: column;
@@ -548,9 +689,10 @@
   }
   .price-card.featured .paket-name { color: var(--sage); }
   .price-card .price {
-    font-size: 34px;
+    font-size: 38px;
     font-weight: 800;
-    margin: 8px 0 20px;
+    margin: 10px 0 22px;
+    letter-spacing: -0.01em;
   }
   .price-card ul { margin-bottom: 24px; flex: 1; }
   .price-card li {
@@ -560,8 +702,18 @@
     font-size: 14.5px;
     padding: 7px 0;
   }
-  .price-card li svg { flex-shrink: 0; margin-top: 2px; stroke: var(--sage-dark); }
-  .price-card.featured li svg { stroke: var(--sage); }
+  .check-circle {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--sage);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .price-card.featured .check-circle { background: var(--sage); }
+  .check-circle svg { width: 11px; height: 11px; stroke: var(--white); }
   .price-note {
     text-align: center;
     font-size: 13px;
@@ -569,43 +721,49 @@
     margin-top: 28px;
   }
 
-  /* FAQ */
-  .faq-item {
-    background: var(--white);
-    border-radius: 14px;
-    box-shadow: var(--shadow);
-    margin-bottom: 12px;
-    overflow: hidden;
-    transition: box-shadow 0.3s ease;
+  /* FAQ (editorial list) */
+  .faq-list {
+    border-top: 1px solid rgba(61, 43, 31, 0.12);
   }
-  .faq-item:hover, .faq-item:active { box-shadow: var(--shadow-lg); }
+  .faq-item {
+    border-bottom: 1px solid rgba(61, 43, 31, 0.12);
+  }
   .faq-question {
     width: 100%;
     background: none;
     border: none;
     text-align: left;
-    padding: 20px;
+    padding: 24px 4px;
     font-family: inherit;
-    font-size: 15.5px;
+    font-size: 16px;
     font-weight: 700;
     color: var(--coklat);
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 12px;
+    gap: 18px;
     cursor: pointer;
+    transition: opacity 0.2s ease;
   }
+  .faq-question:hover, .faq-question:active { opacity: 0.7; }
+  .faq-num {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--sage-dark);
+    flex-shrink: 0;
+    width: 26px;
+  }
+  .faq-question span.q-text { flex: 1; }
   .faq-question .plus {
     flex-shrink: 0;
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
-    background: var(--krem);
+    background: var(--sage-tint);
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    transition: transform 0.25s ease;
+    transition: transform 0.25s ease, background 0.25s ease;
   }
   .faq-question .plus::before,
   .faq-question .plus::after {
@@ -615,16 +773,19 @@
   }
   .faq-question .plus::before { width: 10px; height: 2px; }
   .faq-question .plus::after { width: 2px; height: 10px; }
-  .faq-item.open .faq-question .plus { transform: rotate(45deg); }
+  .faq-item.open .faq-question .plus { transform: rotate(45deg); background: var(--sage); }
+  .faq-item.open .faq-question .plus::before,
+  .faq-item.open .faq-question .plus::after { background: var(--white); }
   .faq-answer {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
   }
   .faq-answer p {
-    padding: 0 20px 20px;
+    padding: 0 4px 24px 44px;
     font-size: 14.5px;
     color: #6b5c4f;
+    max-width: 560px;
   }
 
   /* CTA FINAL */
@@ -634,15 +795,30 @@
     color: var(--krem);
     border-radius: 24px;
     margin: 0 20px;
-    max-width: 1060px;
+    max-width: 1080px;
     margin-inline: auto;
     padding: 56px 24px;
+    position: relative;
+    overflow: hidden;
   }
-  .cta-final h2 { color: var(--krem); }
-  .cta-final p { color: #D8CDBF; margin-bottom: 28px; font-size: 16px; }
+  .cta-blob {
+    position: absolute;
+    width: 260px; height: 260px;
+    background: var(--sage);
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.25;
+    bottom: -100px;
+    left: -60px;
+    pointer-events: none;
+  }
+  .cta-final h2 { color: var(--krem); position: relative; z-index: 1; }
+  .cta-final p { color: #D8CDBF; margin-bottom: 28px; font-size: 16px; position: relative; z-index: 1; }
   .cta-final .btn-primary {
     font-size: 17px;
     padding: 18px 32px;
+    position: relative;
+    z-index: 1;
   }
 
   /* FOOTER */
@@ -651,6 +827,7 @@
     padding: 40px 20px 32px;
     font-size: 13px;
     color: #7a6a5c;
+    border-top: 1px solid rgba(61, 43, 31, 0.08);
   }
   footer .tagline { margin-top: 4px; font-weight: 600; color: var(--coklat); }
 
@@ -680,8 +857,8 @@
 
   /* DESKTOP */
   @media (min-width: 768px) {
-    section { padding: 96px 0; }
-    .hero { padding: 80px 0 60px; }
+    section { padding: 100px 0; }
+    .hero { padding: 84px 0 60px; }
     .hero-grid {
       grid-template-columns: 1.1fr 0.9fr;
       gap: 60px;
@@ -689,7 +866,8 @@
     .hero-text p { font-size: 18px; }
     .pain-grid { grid-template-columns: repeat(3, 1fr); }
     .feature-grid { grid-template-columns: repeat(2, 1fr); }
-    .price-grid { grid-template-columns: repeat(2, 1fr); max-width: 720px; margin: 0 auto; }
+    .portfolio-grid { grid-template-columns: 0.85fr 1fr; gap: 56px; }
+    .price-grid { grid-template-columns: repeat(2, 1fr); max-width: 740px; margin: 0 auto; }
     .section-sub { font-size: 17px; }
     .scroll-cue { display: flex; }
   }
@@ -716,6 +894,7 @@
     <div class="container">
       <div class="hero-grid">
         <div class="hero-text">
+          <span class="hero-badge hero-anim d0">Untuk UMKM F&amp;B • Fashion • Skincare • Kerajinan</span>
           <h1 class="hero-anim d1">Website Toko Kamu, <span class="highlight">Siap dalam 3 Hari</span></h1>
           <p class="hero-anim d2">Pelanggan pilih produk, isi data, langsung order via WhatsApp — tanpa ribet, tanpa aplikasi tambahan.</p>
           <a href="https://brevacafe.vercel.app" target="_blank" rel="noopener" class="btn btn-primary hero-anim d3">Lihat Contoh Website →</a>
@@ -762,27 +941,31 @@
   </section>
 
   <!-- PAIN POINT -->
-  <section id="masalah">
+  <section id="masalah" class="panel panel-dark">
+    <div class="pain-blob" aria-hidden="true"></div>
     <div class="container">
-      <div class="fade-in">
-        <span class="eyebrow">Masalah UMKM</span>
-        <h2>Masih terima order manual?</h2>
-        <p class="section-sub">Chat WhatsApp yang menumpuk bikin order gampang salah dan calon pembeli kabur duluan.</p>
+      <div class="fade-in" style="position:relative; z-index:1;">
+        <span class="eyebrow eyebrow--light">Masalah UMKM</span>
+        <h2 class="text-light">Masih terima order manual?</h2>
+        <p class="section-sub section-sub--light">Chat WhatsApp yang menumpuk bikin order gampang salah dan calon pembeli kabur duluan.</p>
       </div>
       <div class="pain-grid">
         <div class="pain-card fade-in d1">
+          <span class="ghost-num ghost-num--light">01</span>
           <div class="icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C97B63" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           </div>
           <p class="title">Chat WA panjang hanya untuk tahu harga</p>
         </div>
         <div class="pain-card fade-in d2">
+          <span class="ghost-num ghost-num--light">02</span>
           <div class="icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C97B63" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
           </div>
           <p class="title">Order masuk tapi sering salah atau tidak lengkap</p>
         </div>
         <div class="pain-card fade-in d3">
+          <span class="ghost-num ghost-num--light">03</span>
           <div class="icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C97B63" stroke-width="2" stroke-linecap="round"><path d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
           </div>
@@ -802,18 +985,22 @@
       </div>
       <div class="feature-grid">
         <div class="feature-card fade-in d1">
+          <span class="ghost-num">01</span>
           <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
           <p class="title">Catalog produk dengan foto &amp; harga</p>
         </div>
         <div class="feature-card fade-in d2">
+          <span class="ghost-num">02</span>
           <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
           <p class="title">Form order otomatis → langsung ke WA kamu</p>
         </div>
         <div class="feature-card fade-in d3">
+          <span class="ghost-num">03</span>
           <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v13H3z"/><path d="M8 21h8M12 16v5"/></svg></div>
           <p class="title">Bisa pickup atau delivery</p>
         </div>
         <div class="feature-card fade-in d4">
+          <span class="ghost-num">04</span>
           <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></div>
           <p class="title">Tampil profesional di HP pelanggan</p>
         </div>
@@ -822,18 +1009,48 @@
   </section>
 
   <!-- PORTFOLIO -->
-  <section id="portfolio">
+  <section id="portfolio" class="panel panel-sage">
     <div class="container">
       <div class="fade-in">
         <span class="eyebrow">Portfolio</span>
         <h2>Sudah live:</h2>
       </div>
-      <div class="portfolio-card fade-in">
-        <span class="portfolio-badge"><span class="dot"></span>Live sekarang</span>
-        <h3>Breva Coffee</h3>
-        <span class="url">brevacafe.vercel.app</span>
-        <p class="desc">Website coffee shop dengan menu, pilihan pickup/delivery, dan order via WhatsApp.</p>
-        <a href="https://brevacafe.vercel.app" target="_blank" rel="noopener" class="btn btn-primary">Lihat Website →</a>
+      <div class="portfolio-grid">
+        <div class="portfolio-info fade-in d1">
+          <span class="portfolio-badge"><span class="dot"></span>Live sekarang</span>
+          <h3>Breva Coffee</h3>
+          <span class="url">brevacafe.vercel.app</span>
+          <p class="desc">Website coffee shop dengan menu, pilihan pickup/delivery, dan order via WhatsApp.</p>
+          <a href="https://brevacafe.vercel.app" target="_blank" rel="noopener" class="btn btn-dark">Lihat Website →</a>
+        </div>
+        <div class="browser-mockup fade-in d2">
+          <div class="browser-bar">
+            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+            <div class="browser-url">brevacafe.vercel.app</div>
+          </div>
+          <div class="browser-body">
+            <div class="menu-hero">☕ Breva Coffee</div>
+            <div class="menu-item">
+              <div class="thumb m1"></div>
+              <div class="lines"><div class="l1"></div><div class="l2"></div></div>
+              <div class="price">Rp 22.000</div>
+            </div>
+            <div class="menu-item">
+              <div class="thumb m2"></div>
+              <div class="lines"><div class="l1"></div><div class="l2"></div></div>
+              <div class="price">Rp 28.000</div>
+            </div>
+            <div class="menu-item">
+              <div class="thumb m3"></div>
+              <div class="lines"><div class="l1"></div><div class="l2"></div></div>
+              <div class="price">Rp 35.000</div>
+            </div>
+            <div class="menu-chips">
+              <span class="chip">Pickup</span>
+              <span class="chip">Delivery</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -851,11 +1068,11 @@
           <span class="paket-name">Paket Starter</span>
           <div class="price">Rp 350.000</div>
           <ul>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Website catalog 1 halaman</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Sampai 10 produk</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Form order → WhatsApp</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Mobile-friendly</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Selesai dalam 3 hari kerja</li>
+            <li><span class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Website catalog 1 halaman</li>
+            <li><span class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Sampai 10 produk</li>
+            <li><span class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Form order → WhatsApp</li>
+            <li><span class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Mobile-friendly</li>
+            <li><span class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Selesai dalam 3 hari kerja</li>
           </ul>
           <a href="https://wa.me/6281292567788?text=Halo%20Studio%20Harel%2C%20saya%20mau%20pesan%20Paket%20Starter%20(Rp%20350.000)" target="_blank" rel="noopener" class="btn btn-outline btn-block">Pesan Paket Ini</a>
         </div>
@@ -864,13 +1081,13 @@
           <span class="paket-name">Paket Lengkap</span>
           <div class="price">Rp 650.000</div>
           <ul>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Semua di Starter, plus:</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Produk tidak terbatas</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Pilihan pickup &amp; delivery</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Tanggal order &amp; jam operasional</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Custom domain (.com) — gratis tahun pertama</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Revisi sampai puas</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Selesai dalam 5 hari kerja</li>
+            <li><span class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Semua di Starter, plus:</li>
+            <li><span class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Produk tidak terbatas</li>
+            <li><span class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Pilihan pickup &amp; delivery</li>
+            <li><span class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Tanggal order &amp; jam operasional</li>
+            <li><span class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Custom domain (.com) — gratis tahun pertama</li>
+            <li><span class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Revisi sampai puas</li>
+            <li><span class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Selesai dalam 5 hari kerja</li>
           </ul>
           <a href="https://wa.me/6281292567788?text=Halo%20Studio%20Harel%2C%20saya%20mau%20pesan%20Paket%20Lengkap%20(Rp%20650.000)" target="_blank" rel="noopener" class="btn btn-primary btn-block">Pesan Paket Ini</a>
         </div>
@@ -886,28 +1103,31 @@
         <span class="eyebrow">FAQ</span>
         <h2>Pertanyaan yang sering ditanyakan</h2>
       </div>
-      <div class="faq-list" style="max-width:680px;">
-        <div class="faq-item fade-in d1">
+      <div class="faq-list fade-in" style="max-width:680px;">
+        <div class="faq-item">
           <button class="faq-question">
-            Apakah saya perlu paham teknologi?
+            <span class="faq-num">01</span>
+            <span class="q-text">Apakah saya perlu paham teknologi?</span>
             <span class="plus"></span>
           </button>
           <div class="faq-answer">
             <p>Tidak perlu. Kamu cukup kirim foto produk, nama, dan harga — sisanya kami yang urus.</p>
           </div>
         </div>
-        <div class="faq-item fade-in d2">
+        <div class="faq-item">
           <button class="faq-question">
-            Setelah website jadi, siapa yang kelola?
+            <span class="faq-num">02</span>
+            <span class="q-text">Setelah website jadi, siapa yang kelola?</span>
             <span class="plus"></span>
           </button>
           <div class="faq-answer">
             <p>Website bisa kamu pakai langsung. Kalau perlu update produk, bisa hubungi kami dengan biaya revisi Rp 50.000/sesi.</p>
           </div>
         </div>
-        <div class="faq-item fade-in d3">
+        <div class="faq-item">
           <button class="faq-question">
-            Apakah ada biaya bulanan?
+            <span class="faq-num">03</span>
+            <span class="q-text">Apakah ada biaya bulanan?</span>
             <span class="plus"></span>
           </button>
           <div class="faq-answer">
@@ -922,7 +1142,8 @@
   <section id="kontak">
     <div class="container">
       <div class="cta-final fade-in">
-        <h2>Siap punya <span class="marker">website toko sendiri</span>?</h2>
+        <div class="cta-blob" aria-hidden="true"></div>
+        <h2>Siap punya <span class="marker marker--light">website toko sendiri</span>?</h2>
         <p>Konsultasi gratis, tanpa komitmen</p>
         <a href="https://wa.me/6281292567788?text=Halo%20Studio%20Harel%2C%20saya%20mau%20konsultasi%20tentang%20pembuatan%20website%20toko" target="_blank" rel="noopener" class="btn btn-primary">Chat WhatsApp Sekarang</a>
       </div>
